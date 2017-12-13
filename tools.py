@@ -177,7 +177,7 @@ def LegendreSymbol(a, b):
 	"""
 	if (MillerRabin(b)):
 		return JacobiSymbol(a, b)
-	return "2nd number is not prime"
+	return "ERROR: 2nd number is not prime"
 
 def InverseElementInFieldByMod(a, p):
 	"""

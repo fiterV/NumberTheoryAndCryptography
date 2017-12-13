@@ -1,4 +1,17 @@
 from tools import *
+from termcolor import colored
+
+
+MENU_ERROR = colored("Wrong index. Please try again", 'red')
+MENU=colored("""1) Mobius function
+2) Eulers function
+3) Legendre symbol
+4) Jacobi symbol
+5) Miller-Rabin test
+6) Pollard: factorization
+7) Rsa scheme
+8) Pollard: discrete logarithm""", 'green')
+
 
 def DisLogInput():
 	p = input("P = ")
@@ -31,7 +44,7 @@ def JacobiInput():
 def LegendreInput():
     a = int(input("A = "))
     b = int(input("B = "))
-    print("Legendre symbol = {}".format(JacobiSymbol(a, b)))
+    print("Legendre symbol = {}".format(LegendreSymbol(a, b)))
 
 def PrimeTestInput():
 	a = int(input("N = "))
@@ -55,35 +68,23 @@ def FactorizeInput():
 	print()
 
 def Announcement():
-    print("Menu:")
-    print("1) Mobius function")
-    print("2) Miller-Rabin test")
-    print("3) Pollard: factorization")
-    print("4) Eulers function")
-    print("5) Rsa scheme")
-    print("6) Pollard: discrete logarithm")
-    print("7) Legendre symbol")
-    print("8) Jacobi symbol")
+    print(MENU)    
+    
+functions = [
+	'MobiusInput', 
+	'PhiInput', 
+	'LegendreInput', 
+	'JacobiInput',
+	'PrimeTestInput',
+	'FactorizeInput',
+	'RSASCHEME',
+	'DisLogInput',
+]
 
 while True:
     Announcement()
     picker = int(input("Pick a number from menu ? = "))
     if picker<1 or picker>8:
-        print("Wrong index. Please try again")
+        print(MENU_ERROR)
     else:
-        if (picker==1):
-            MobiusInput()
-        elif (picker==2):
-            PrimeTestInput()
-        elif (picker==3):
-            FactorizeInput()
-        elif (picker==4):
-            PhiInput()
-        elif (picker==5):
-            RSASCHEME()
-        elif (picker==6):
-            DisLogInput()
-        elif (picker==7):
-            LegendreInput()
-        elif (picker==8):
-            JacobiInput()
+    	globals()[functions[picker-1]]()
