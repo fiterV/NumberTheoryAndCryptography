@@ -4,7 +4,8 @@ import random
 
 def MillerRabin(n):
 	"""
-		Probabilistic primality test
+		Probabilistic primality test.
+		Returns 1 if number is probable prime, 0 otherwise.
 		Theory: https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
 	"""
 	if (n==2 or n==3):return 1
@@ -28,7 +29,7 @@ def MillerRabin(n):
 
 def PollardRhoForFactorization(n):
 	"""
-		Pollard's rho algorithm for integer factorization. Function returns random divisor of n.
+		Pollard's rho algorithm for integer factorization. Function returns random divisor of n
 		Theory: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
 	"""
 	if (MillerRabin(n)):
@@ -52,7 +53,7 @@ def PollardRhoForFactorization(n):
 
 def FastFactorizationUsingStack(n):
 	"""
-		Complete factorization of a number using Pollard's rho algorithm. Returns dictionary where (key, value) means that n is divisible by key**value
+		Complete factorization of a number using Pollard's rho algorithm. Returns dictionary where (key, value) means that n is divisible by key^value
 	"""
 	d={}
 	x = [n]
@@ -93,12 +94,20 @@ def MobiusFastComputation(n):
 	return (1 if len(d.keys())%2==0 else -1)
 
 def GetRandomPrime(bits):
+	"""
+		Returns random prime number with certain number of bits
+	"""
 	x = random.randint(2**bits, 2**(bits+1)-1)
 	while (not MillerRabin(x)):
 		x+=1
 	return x
 
 def gcd_ex(a, b):
+	"""
+		Extended Euclidean algorithm : a*x+b*y=gcd(a, b) . In this library is used in RSA scheme in order to find inverse element in some field
+		Theory: eng: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+				rus version: http://e-maxx.ru/algo/extended_euclid_algorithm
+	"""
 	if (a==0):
 		return (0, 1)
 	xx = gcd_ex(b%a, a)
@@ -107,6 +116,10 @@ def gcd_ex(a, b):
 	return (x, y)
 
 def RSASCHEME():
+	"""
+		Outputs RSA scheme: creating base, randomly picking a number, ciphering and deciphering it
+		Theory and inspiration: https://www.youtube.com/watch?v=wXB-V_Keiu8
+	"""
 	# 2 random prime numbers
 	p = GetRandomPrime(100)
 	q = GetRandomPrime(100)
@@ -137,6 +150,12 @@ def RSASCHEME():
 	print("Decoding C : ", m2)
 
 def JacobiSymbol(a, n):
+	"""
+		Returns Jacobi symbol for a/n .
+		Theory and properties were taken from: 
+			https://en.wikipedia.org/wiki/Jacobi_symbol
+			http://2000clicks.com/mathhelp/NumberTh27JacobiSymbolAlgorithm.aspx
+	"""
 	if (n == 1 and a==0):
 		return 1
 	if (gcd(a, n)!=1):
@@ -153,15 +172,25 @@ def JacobiSymbol(a, n):
 		return JacobiSymbol(n, a)
 
 def LegendreSymbol(a, b):
+	"""
+		Returns Legendre symbol for a/b.
+	"""
 	if (MillerRabin(b)):
 		return JacobiSymbol(a, b)
 	return "2nd number is not prime"
 
 def InverseElementInFieldByMod(a, p):
+	"""
+		Returns inverse element for a in field p using Euler's theorem( https://en.wikipedia.org/wiki/Euler%27s_theorem )
+	"""
 	return pow(a, PhiFastComputation(p) - 1, p)
 
 
 def PollardAlgorithmForDiscreteLogarithms(a, b, p):
+	"""
+		Pollard's rho algorithm for logarithms for solving discrete logarithm problem
+		Theory: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm_for_logarithms
+	"""
 	u1 = 0
 	u2 = 0
 	v1 =0
