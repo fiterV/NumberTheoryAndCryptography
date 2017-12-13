@@ -3,6 +3,10 @@ from math import sqrt
 import random
 
 def MillerRabin(n):
+	"""
+		Probabilistic primality test
+		Theory: https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
+	"""
 	if (n==2 or n==3):return 1
 	if (n%2==0): return 0
 	m = n-1
@@ -23,6 +27,10 @@ def MillerRabin(n):
 	return 1
 
 def PollardRhoForFactorization(n):
+	"""
+		Pollard's rho algorithm for integer factorization. Function returns random divisor of n.
+		Theory: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
+	"""
 	if (MillerRabin(n)):
 		return n
 	p = int(sqrt(n))
@@ -43,6 +51,9 @@ def PollardRhoForFactorization(n):
 
 
 def FastFactorizationUsingStack(n):
+	"""
+		Complete factorization of a number using Pollard's rho algorithm. Returns dictionary where (key, value) means that n is divisible by key**value
+	"""
 	d={}
 	x = [n]
 	while len(x)>0:
@@ -57,6 +68,10 @@ def FastFactorizationUsingStack(n):
 
 
 def PhiFastComputation(n):
+	"""
+		Returns Euler's totient function of n using FastFactorizationUsingStack
+		Theory: https://en.wikipedia.org/wiki/Euler%27s_totient_function
+	"""
 	d = FastFactorizationUsingStack(n)
 	res = n
 	for key in d:
@@ -65,6 +80,10 @@ def PhiFastComputation(n):
 	return res
 
 def MobiusFastComputation(n):
+	"""
+		Returns Mobius function of n using FastFactorizationUsingStack
+		Theory: https://en.wikipedia.org/wiki/M%C3%B6bius_function
+	"""
 	if n==1:
 		return 1
 	d = FastFactorizationUsingStack(n)
@@ -73,10 +92,11 @@ def MobiusFastComputation(n):
 			return 0
 	return (1 if len(d.keys())%2==0 else -1)
 
-def GetRandomPrime(l, r):
-    while (not MillerRabin(l)):
-        l+=1
-    return l
+def GetRandomPrime(bits):
+	x = random.randint(2**bits, 2**(bits+1)-1)
+	while (not MillerRabin(x)):
+		x+=1
+	return x
 
 def gcd_ex(a, b):
 	if (a==0):
@@ -88,8 +108,8 @@ def gcd_ex(a, b):
 
 def RSASCHEME():
 	# 2 random prime numbers
-	p = GetRandomPrime(random.randint(10**30, 10**35), 10**35)
-	q = GetRandomPrime(random.randint(10**30, 10**35), 10**35)
+	p = GetRandomPrime(100)
+	q = GetRandomPrime(100)
 	N = p*q
 	phiN = (p-1)*(q-1)
 
@@ -137,7 +157,7 @@ def LegendreSymbol(a, b):
 		return JacobiSymbol(a, b)
 	return "2nd number is not prime"
 
-def InverseElementInCircleByMod(a, p):
+def InverseElementInFieldByMod(a, p):
 	return pow(a, PhiFastComputation(p) - 1, p)
 
 
@@ -176,10 +196,10 @@ def PollardAlgorithmForDiscreteLogarithms(a, b, p):
 	dv = v2 - v1
 	d = gcd(du, pm1)
 	if (d==1):
-		return ((dv%pm1) * InverseElementInCircleByMod(du % pm1, pm1)) % pm1
+		return ((dv%pm1) * InverseElementInFieldByMod(du % pm1, pm1)) % pm1
 	pm1dd = pm1//d
 	bmodp = b % p
-	l = (( dv % pm1dd ) * InverseElementInCircleByMod(du % pm1dd, pm1dd)) % pm1dd
+	l = (( dv % pm1dd ) * InverseElementInFieldByMod(du % pm1dd, pm1dd)) % pm1dd
 	for m in range(0, d+1):
 		if (pow(a, l, p)==bmodp):
 			return l
