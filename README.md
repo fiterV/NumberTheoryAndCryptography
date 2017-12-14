@@ -1,5 +1,6 @@
-# Number theory and Cryptography class
+# Number theory and Cryptography class 
 
+[![Build Status](https://travis-ci.org/fiterV/NumberTheoryAndCryptography.svg?branch=master)](https://travis-ci.org/fiterV/NumberTheoryAndCryptography) ![Python3.5](https://img.shields.io/badge/Python-3.5-green.svg)
 ## Implemented
 1) Mobius function
 2) Euler's totient function
