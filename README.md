@@ -17,5 +17,11 @@ python3 main.py
 
 ### Screenshots
 
-![screenshot](images/1.png) 
+![runningScreenshot](images/1.png) 
+```
+import tools
+help(tools)
+```
+![toolsdocScreenshot](images/2.png) 
+
 
