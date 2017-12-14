@@ -17,5 +17,5 @@ python3 main.py
 
 ### Screenshots
 
-![screenshot](/home/fiter/Crypto/images/1.png) 
+![screenshot](images/1.png) 
 
